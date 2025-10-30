@@ -34,8 +34,9 @@ export default function Dashboard() {
   const { user } = useAuth();
   const [transactions, setTransactions] = useState([]);
   const [filter, setFilter] = useState("ALL"); // ALL | INCOME | EXPENSE
+  const [categoryMode, setCategoryMode] = useState("TYPE"); // TYPE | CATEGORY
 
-  const categoryStyles = {
+  const categoryTypeStyles = {
     HEALTH: {
       icon: <FaHeartbeat />,
       iconColor: "#FF1111",
@@ -208,9 +209,13 @@ export default function Dashboard() {
 
     filteredTransactions.forEach((t) => {
       if (t.type === "E") {
-        const catKey = t.category?.type || "UNDEFINED";
-        grouped[catKey] = (grouped[catKey] || 0) + t.value;
-        transactionCount[catKey] = (transactionCount[catKey] || 0) + 1;
+        const key =
+          categoryMode === "TYPE"
+            ? t.category?.type || "UNDEFINED"
+            : t.category?.name || "Sem categoria";
+
+        grouped[key] = (grouped[key] || 0) + t.value;
+        transactionCount[key] = (transactionCount[key] || 0) + 1;
       }
     });
 
@@ -218,20 +223,23 @@ export default function Dashboard() {
 
     return Object.entries(grouped)
       .map(([key, val]) => {
-        const catInfo = categoryStyles[key] || categoryStyles.UNDEFINED;
+        const style =
+          categoryTypeStyles[key?.toUpperCase()] || categoryTypeStyles.OTHER;
+
+        const name = categoryMode === "TYPE" ? style.label || key : key; // quando for por categoria, mostra o nome original
 
         return {
           key,
-          name: catInfo.label,
-          style: catInfo,
+          name,
+          style,
           value: val,
           percent: totalSpent ? ((val / totalSpent) * 100).toFixed(1) : 0,
           transactions: transactionCount[key] || 0,
         };
       })
       .sort((a, b) => b.value - a.value);
-  }, [filteredTransactions]);
-
+  }, [filteredTransactions, categoryMode]);
+  const displayedCategories = categoriesSummary;
   return (
     <div className="space-y-8 w-[full] mb-10">
       <div className="flex justify-center gap-4 mb-2">
@@ -301,20 +309,42 @@ export default function Dashboard() {
 
       {filter !== "INCOME" && (
         <div className="card p-5">
-          <h3 className="font-semibold mb-4 text-gray-700">
-            Despesas por categoria
-          </h3>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-gray-700">
+              Despesas por
+            </h3>
 
-          {categoriesSummary.length === 0 ? (
+            {/* 🔹 Submenu de agrupamento */}
+            <div className="flex gap-2 text-sm">
+              {[
+                { key: "TYPE", label: "Tipo" },
+                { key: "CATEGORY", label: "Categoria" },
+              ].map((opt) => (
+                <button
+                  key={opt.key}
+                  onClick={() => setCategoryMode(opt.key)}
+                  className={`px-3 py-1 rounded-full transition-all ${
+                    categoryMode === opt.key
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {displayedCategories.length === 0 ? (
             <p className="text-gray-500 text-center py-10">
               Nenhuma despesa registrada.
             </p>
           ) : (
             <ul className="space-y-1">
-              {categoriesSummary.map((c, i) => {
+              {displayedCategories.map((c, i) => {
                 const style =
-                  categoryStyles[c.key?.toUpperCase()] ||
-                  categoryStyles.UNDEFINED;
+                  categoryTypeStyles[c.key?.toUpperCase()] ||
+                  categoryTypeStyles.UNDEFINED;
 
                 return (
                   <li
@@ -349,9 +379,7 @@ export default function Dashboard() {
                             {c.name}
                           </div>
                           <div className="text-sm text-gray-500">
-                            {c.transactions ||
-                              Math.floor(Math.random() * 8 + 1)}{" "}
-                            transações
+                            {c.transactions} transações
                           </div>
                         </div>
                       </div>
