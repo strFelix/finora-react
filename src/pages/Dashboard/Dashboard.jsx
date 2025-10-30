@@ -326,7 +326,6 @@ export default function Dashboard() {
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-gray-700">Despesas por</h3>
 
-            {/* 🔹 Submenu de agrupamento */}
             <div className="flex gap-2 text-sm">
               {[
                 { key: "TYPE", label: "Tipo" },
@@ -363,7 +362,6 @@ export default function Dashboard() {
                     key={i}
                     className="relative overflow-hidden rounded-lg p-3"
                   >
-                    {/* Barra de preenchimento proporcional */}
                     <div
                       className="absolute top-0 left-0 h-full rounded-lg transition-all duration-500"
                       style={{
@@ -374,7 +372,6 @@ export default function Dashboard() {
                     ></div>
 
                     <div className="relative flex items-center justify-between">
-                      {/* Ícone + nome + transações */}
                       <div className="flex items-center gap-3">
                         <div
                           className="w-10 h-10 flex items-center justify-center rounded-full"
@@ -396,7 +393,6 @@ export default function Dashboard() {
                         </div>
                       </div>
 
-                      {/* Valor e percentual */}
                       <div className="text-right">
                         <div className="font-semibold text-gray-800">
                           R$ {c.value.toFixed(1)}

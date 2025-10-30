@@ -67,7 +67,6 @@ export default function Category() {
 
   return (
     <div className="grid md:grid-cols-3 gap-6">
-      {/* FORMULÁRIO */}
       <div className="md:col-span-1 card p-4 max-h-fit">
         <h2 className="font-semibold mb-3">Nova categoria</h2>
         <form onSubmit={create} className="space-y-3">
@@ -95,11 +94,9 @@ export default function Category() {
         </form>
       </div>
 
-      {/* LISTAGEM COM FILTRO */}
       <div className="md:col-span-2 card p-4 flex flex-col h-[600px]">
         <h2 className="font-semibold mb-3">Minhas categorias</h2>
 
-        {/* 🔹 Botões de filtro por tipo */}
         <div className="flex flex-wrap gap-2 mb-4">
           {typeOptions.map((opt) => {
             const isActive = selectedTypes.includes(opt.value);
@@ -120,7 +117,6 @@ export default function Category() {
           })}
         </div>
 
-        {/* 🔹 Lista com scroll */}
         <div className="overflow-y-auto pr-2" style={{ maxHeight: "520px" }}>
           {filteredItems.length === 0 ? (
             <p className="text-gray-500 text-center py-10">
