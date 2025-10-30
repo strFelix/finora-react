@@ -39,7 +39,7 @@ export default function Transaction() {
 
     const payload = {
       value: Number(value),
-      date: new Date(date).toISOString().split('T')[0],
+      date: date,
       description,
       type, // mantém E ou F
       installment: 1,
@@ -111,7 +111,7 @@ export default function Transaction() {
                   <div className="font-medium">R$ {t.value?.toFixed?.(2) || t.value}</div>
                   <div className="text-sm text-gray-500">{t.description || '-'}</div>
                   <div className="text-xs text-gray-400">
-                    {new Date(t.date).toLocaleDateString()} • {t.type === 'I' ? 'Entrada' : 'Saída'}
+                    {t.date.split('-').reverse().join('/')} • {t.type === 'I' ? 'Entrada' : 'Saída'}
                     {t.category && t.category.name ? ` • ${t.category.name}` : ''}
                   </div>
                 </div>
