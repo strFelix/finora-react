@@ -115,7 +115,7 @@ export default function Transaction() {
             </select>
           ) : (
             <select className="input text-gray-400" disabled>
-              <option>Não há categorias cadastradas</option>
+              <option value="">Sem categoria</option>
             </select>
           )}
 
@@ -137,7 +137,7 @@ export default function Transaction() {
             required
           />
 
-          <Button disabled={categories.length === 0 && !categoryId}>
+          <Button>
             Adicionar
           </Button>
         </form>
