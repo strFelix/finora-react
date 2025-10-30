@@ -1,16 +1,18 @@
-
 import { Outlet, NavLink } from 'react-router-dom'
-import { useAuth } from '../hooks/useAuth'
+import logo from '../assets/img/logo.png'
 
-export default function MainLayout(){
-  const { logout } = useAuth()
+export default function MainLayout() {
+
   return (
     <div className="min-h-screen grid grid-rows-[auto,1fr] bg-gray-50">
       <header className="border-b bg-white">
         <div className="container-responsive py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-brand-500" />
-            <span className="font-semibold text-lg">finora</span>
+            <img
+              src={logo}
+              alt="Finora Logo"
+              className="w-24 object-contain select-none"
+            />
           </div>
           <nav className="hidden md:flex items-center gap-6">
             <NavLink to="/dashboard" className="text-gray-600 hover:text-black">Métricas</NavLink>
@@ -20,8 +22,8 @@ export default function MainLayout(){
           </nav>
         </div>
       </header>
-      <main className="container-responsive py-6 w-[90%]">
-        <Outlet/>
+      <main className="container-responsive py-6 w-[90%] mx-auto">
+        <Outlet />
       </main>
       <nav className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t">
         <div className="flex justify-around py-2 text-sm">
