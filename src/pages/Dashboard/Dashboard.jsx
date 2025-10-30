@@ -130,26 +130,36 @@ export default function Dashboard() {
   );
 
   const chartData = useMemo(() => {
-    if (transactions.length === 0) return { labels: [], datasets: [] };
+    if (filteredTransactions.length === 0) return { labels: [], datasets: [] };
 
-    const sorted = [...transactions].sort(
-      (a, b) => new Date(a.date) - new Date(b.date)
-    );
+    const dailyTotals = {};
+    filteredTransactions.forEach((t) => {
+      const dateKey = new Date(t.date).toLocaleDateString("pt-BR");
 
-    const labels = sorted.map((t) =>
-      new Date(t.date).toLocaleDateString("pt-BR")
-    );
+      if (!dailyTotals[dateKey]) {
+        dailyTotals[dateKey] = { entries: 0, exits: 0 };
+      }
+
+      if (t.type === "I") dailyTotals[dateKey].entries += t.value;
+      if (t.type === "E") dailyTotals[dateKey].exits += t.value;
+    });
+
+    const labels = Object.keys(dailyTotals).sort((a, b) => {
+      const [da, ma, ya] = a.split("/");
+      const [db, mb, yb] = b.split("/");
+      return new Date(`${ya}-${ma}-${da}`) - new Date(`${yb}-${mb}-${db}`);
+    });
 
     let accumulatedEntry = 0;
     let accumulatedExit = 0;
 
-    const entryValues = sorted.map((t) => {
-      if (t.type === "I") accumulatedEntry += t.value;
+    const entryValues = labels.map((label) => {
+      accumulatedEntry += dailyTotals[label].entries;
       return accumulatedEntry;
     });
 
-    const exitValues = sorted.map((t) => {
-      if (t.type === "E") accumulatedExit += t.value;
+    const exitValues = labels.map((label) => {
+      accumulatedExit += dailyTotals[label].exits;
       return accumulatedExit;
     });
 
@@ -162,6 +172,8 @@ export default function Dashboard() {
         tension: 0.4,
         fill: true,
         borderWidth: 3,
+        pointRadius: 5,
+        pointHoverRadius: 7,
       },
       {
         label: "Saídas",
@@ -171,6 +183,8 @@ export default function Dashboard() {
         tension: 0.4,
         fill: true,
         borderWidth: 3,
+        pointRadius: 5,
+        pointHoverRadius: 7,
       },
     ];
 
@@ -201,7 +215,7 @@ export default function Dashboard() {
     }
 
     return { labels, datasets: datasetsBase };
-  }, [transactions, filter]);
+  }, [filteredTransactions, filter]);
 
   const categoriesSummary = useMemo(() => {
     const grouped = {};
@@ -310,9 +324,7 @@ export default function Dashboard() {
       {filter !== "INCOME" && (
         <div className="card p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="font-semibold text-gray-700">
-              Despesas por
-            </h3>
+            <h3 className="font-semibold text-gray-700">Despesas por</h3>
 
             {/* 🔹 Submenu de agrupamento */}
             <div className="flex gap-2 text-sm">
