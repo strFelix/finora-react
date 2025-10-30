@@ -49,14 +49,12 @@ export default function Category() {
     return found ? found.label : t;
   };
 
-  // 🔹 Alterna o estado de seleção dos filtros
   const toggleType = (value) => {
     setSelectedTypes((prev) =>
       prev.includes(value) ? prev.filter((t) => t !== value) : [...prev, value]
     );
   };
 
-  // 🔹 Atualiza as categorias exibidas conforme os tipos selecionados
   useEffect(() => {
     if (selectedTypes.length === 0) {
       setFilteredItems(items);

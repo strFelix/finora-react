@@ -19,7 +19,6 @@ export default function Transaction() {
     return now.toISOString().slice(0, 10);
   });
 
-  // novos estados de filtro
   const [search, setSearch] = useState("");
   const [filterType, setFilterType] = useState("ALL"); // ALL | I | E
 
@@ -66,7 +65,6 @@ export default function Transaction() {
     await loadTransactions();
   }
 
-  // 🔍 Filtro e busca
   const filteredItems = useMemo(() => {
     return items.filter((t) => {
       const matchesType =
@@ -85,7 +83,6 @@ export default function Transaction() {
 
   return (
     <div className="grid md:grid-cols-3 gap-6">
-      {/* FORM DE CRIAÇÃO */}
       <div className="md:col-span-1 card p-4 max-h-fit">
         <h2 className="font-semibold mb-3">Nova transação</h2>
         <form onSubmit={create} className="space-y-3">
@@ -150,7 +147,6 @@ export default function Transaction() {
         <div className="flex justify-between items-center mb-3">
           <h2 className="font-semibold">Transações</h2>
 
-          {/* Filtros de tipo */}
           <div className="flex gap-2">
             {[
               { key: "ALL", label: "Todos" },
@@ -186,7 +182,6 @@ export default function Transaction() {
           </div>
         </div>
 
-        {/* Lista com scroll */}
         <div className="overflow-y-auto pr-2" style={{ maxHeight: "480px" }}>
           {filteredItems.length === 0 ? (
             <p className="text-gray-500 text-center py-10">

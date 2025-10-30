@@ -68,14 +68,11 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white relative">
-      {/* ===== LOGIN CARD ===== */}
       <div className="card p-6 rounded-2xl shadow-sm border-0 w-full max-w-lg relative z-10">
-        {/* Ícone de ajuda */}
         <div className="text-end text-gray-400">
           <FaQuestionCircle className="inline-block text-lg cursor-pointer hover:text-gray-600" />
         </div>
 
-        {/* Logo */}
         <div className="text-center mb-6 relative">
           <img
             src="/src/assets/img/logo-high.png"
@@ -84,7 +81,6 @@ export default function Login() {
           />
         </div>
 
-        {/* Formulário */}
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
             <label className="block font-semibold text-sm mb-1 text-gray-700">
@@ -134,7 +130,6 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Links inferiores */}
         <div className="text-center mt-4">
           <button className="text-blue-700 font-semibold text-sm hover:underline">
             Esqueci minha senha
@@ -154,7 +149,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* ===== MODAL DE REGISTRO ===== */}
       {showRegister && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm animate-fadeIn z-20">
           <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md relative animate-slideUp">
