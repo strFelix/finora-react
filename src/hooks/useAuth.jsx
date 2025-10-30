@@ -12,6 +12,12 @@ export function AuthProvider({ children }){
   })
   const navigate = useNavigate()
 
+  const updateUser = (newUser) => {
+    setUser(newUser);
+    localStorage.setItem("user", JSON.stringify(newUser));
+  };
+
+
   const login = async ({ email, plainPassword }) => {
     const { data } = await api.post('/users/authenticate', { email, plainPassword })
     setUser(data)
@@ -26,7 +32,7 @@ export function AuthProvider({ children }){
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   )
